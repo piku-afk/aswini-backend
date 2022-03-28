@@ -44,7 +44,7 @@ class CompanyDetailsView(APIView):
 			address.city=data['city']
 			address.state=data['state']
 			address.country=data['country']
-			address.pin_code=data['pincode']
+			address.pin_code=data['pin_code']
 			
 			address.save()
 			company.address=address
@@ -94,9 +94,11 @@ class CompanyUpdateView(APIView):
 		user_id=Authenticate(request)
 		if int(cid) is None:
 			raise ValidationError("Invalid Input")
+		data=request.data
+		print(data['website'], data.get('address_1'))
+
 		try:
 			obj=Company.objects.get(id=int(cid))
-			data=request.data
 			obj.name=data['name']
 			obj.website=data['website']
 			obj.phn_no=data['phn_no']
@@ -108,11 +110,13 @@ class CompanyUpdateView(APIView):
 			address.city=data['city']
 			address.state=data['state']
 			address.country=data['country']
-			address.pin_code=data['pincode']
+			address.pin_code=data['pin_code']
 				
 			address.save()
 			obj.save()
 			serializer=CompanySerializer(obj)
 			return Response(serializer.data)
 		except:
+			obj=Company.objects.get(id=int(cid))
+			print(obj)
 			raise ValidationError("invalid id")

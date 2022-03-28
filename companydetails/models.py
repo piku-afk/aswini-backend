@@ -50,14 +50,22 @@ class User(AbstractUser):
         
         objects = UserManager()
 
+INDUSTRY_CHOICES = (
+    ('IT', 'IT'),
+    ('Account', 'Account'),
+    ('Sales', 'Sales'),
+    ('Health Care', 'Health Care')
+)
+
 class Company(models.Model):
-	user=models.ForeignKey("User",on_delete=models.CASCADE,related_name='%(class)s_requests_created')
-	name=models.CharField(max_length=100,null=False,unique=True)
-	website=models.CharField(max_length=100,null=True,blank=True)
-	phn_no = models.CharField(max_length = 10)
-	address=models.ForeignKey("Address",null=True,on_delete=models.SET_NULL)
-	industry=models.TextField(max_length=200,blank=True)
-	
+    user=models.ForeignKey("User",on_delete=models.CASCADE,related_name='%(class)s_requests_created')
+    name=models.CharField(max_length=100,null=False,unique=True)
+    website=models.CharField(max_length=100,null=True,blank=True)
+    phn_no = models.CharField(max_length = 10)
+    address=models.ForeignKey("Address",null=True,on_delete=models.SET_NULL)
+    # industry=models.TextField(max_length=200,blank=True)
+    industry = models.CharField(max_length=100, verbose_name='Industry Type', choices=INDUSTRY_CHOICES, default="IT", null=False,blank=False)
+    
     
 
 class Address(models.Model):
